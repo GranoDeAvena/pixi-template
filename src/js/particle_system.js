@@ -1,43 +1,61 @@
-import {particle} from './particle'
+import {Particle} from './particle'
+
+class ParticleSystem {
+
+  constructor(container, texture, number, particle_params) {
+
+    this.container = container
+    this.particles = []
+    for (let i = 0; i < number; i++) {
+      let p = new Particle(texture, particle_params.width, particle_params.height)
+      this.container.addChild(p.sprite)
+      this.particles.push(p)
+    }
+  }
+
+  start(x, y) {
+    // this.container.visible = true
+    for (let p of this.particles) {
+      let rnd = Math.random() * Math.PI * 2
+      let multiply = 2 + Math.random() * 10
+      let x_velocity = Math.sin(rnd) * multiply,
+          y_velocity = Math.cos(rnd) * multiply
+      p.start(x, y, x_velocity, y_velocity)
+    }
+  }
+
+  remove() {
+    for (let p of this.particles) {
+      p.alife = false
+    }
+    // this.container.visible = false
+  }
 
 
-let particle_system = {
-  particles,
-  x: 0, 
-  y: 0,
-  alife: false,
-  init,
-  start,
-  remove
+  radial (delta, particles) {
+    for (let p of particles) {
+      if (p.alife) {
+
+        p.sprite.x += p.vx
+        p.sprite.y += p.vy
+
+        p.vx *= 0.92
+        p.vy *= 0.92
+
+        p.sprite.width += 1
+        p.sprite.height += 1
+        
+        p.sprite.alpha -= 0.02
+        
+        if (p.sprite.alpha <= 0) {
+          p.remove()
+        }
+      }
+    }
+  }
+
 }
 
 
-function init (_sprite) {
-  this.sprite = _sprite
-}
 
-// const create_particles = (texture, number) => {
-//   let particles = []
-//   for (let i = 0; i < number; i++) {
-//     let sprite = new PIXI.Sprite(texture)
-//     app.stage.addChild(sprite)  
-//     sprite.position.set(100, 50)
-//     sprite.anchor.set(0.5, 0.5)
-//     sprite.width = sprite.height = 40
-//     particles.push (sprite)
-//   }
-//   return particles
-// }
-  
-
-function start (p, _x, _y) {
-
-}
-
-function remove (p) {
-
-}
-
-
-
-export {particle_system} 
+export {ParticleSystem} 

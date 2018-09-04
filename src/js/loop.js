@@ -5,8 +5,8 @@ const init = () => {
   app.ticker.add((delta) => looping(delta))
 }
 
-const add = (loop) => {
-  loop_manager.loops.push(loop)
+const add = (loop, params) => {
+  loop_manager.loops.push({loop, params})
 }
 
 
@@ -27,8 +27,8 @@ const remove_all = () => {
 
 
 const looping = (delta) => {
-  for (let loop of loop_manager.loops) {
-    loop(delta)
+  for (let loop_obj of loop_manager.loops) {
+    loop_obj.loop(delta, loop_obj.params)
   }
 }
 
