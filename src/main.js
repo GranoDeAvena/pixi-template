@@ -1,82 +1,142 @@
-import css from './css/style.scss'
-import * as PIXI from 'pixi.js'
-import {app} from './js/canvas'
-import {load, loaded} from './js/loader'
-import {loop_manager} from './js/loop'
-import {
-  Point,
-  Rectangle,
-  QuadTree} from './js/quadtree'
-import {ParticleSystem} from './js/particle_system'
-import {init_menu, main_menu_loop} from './js/main_menu'
+const IDs = {
+  canvas: 'canvas',
+  shaders: {
+      vertex: 'vertex-shader',
+      fragment: 'fragment-shader'
+  }
+};
 
 
-// const pan_flashing = (delta) => {
-//   let pan = loaded.images.pan
+const CANVAS = document.getElementById(IDs.canvas);
+const GL = canvas.getContext('webgl');
 
-//   pan.position.x += 1
-// }
+let PROGRAM;
 
-// const pan_rotating = (delta) => {
-//   let pan = loaded.images.pan
 
-//   pan.rotation += 0.1
-// }
+main();
 
-const whenLoadSuccess = () => {
 
-  loop_manager.init()
-  // loop_manager.add(pan_flashing)
-  // loop_manager.add(pan_rotating)
-  // loop_manager.add(particle_loop)
+function main() {
+  clearCanvas();
+  createPlane();
+  createProgram();
+  createTexture();
+  updateCanvasSize();
+  initEventListeners();
+  draw();
+}
+
+
+function clearCanvas() {
+  GL.clearColor(0.26, 1, 0.93, 1.0);
+  GL.clear(GL.COLOR_BUFFER_BIT);
+}
+
+
+function createPlane() {
+  GL.bindBuffer(GL.ARRAY_BUFFER, GL.createBuffer());
+  GL.bufferData(
+      GL.ARRAY_BUFFER,
+      new Float32Array([
+          -1, -1,
+          -1,  1,
+           1, -1,
+           1,  1
+      ]),
+      GL.STATIC_DRAW
+  );
+}
+
+
+function createProgram() {
+  const shaders = getShaders();
+
+  PROGRAM = GL.createProgram();
+
+  GL.attachShader(PROGRAM, shaders.vertex);
+  GL.attachShader(PROGRAM, shaders.fragment);
+  GL.linkProgram(PROGRAM);
   
-  testtest()
+  const vertexPositionAttribute = GL.getAttribLocation(PROGRAM, 'a_position');
+  
+  GL.enableVertexAttribArray(vertexPositionAttribute);
+  GL.vertexAttribPointer(vertexPositionAttribute, 2, GL.FLOAT, false, 0, 0);
 
-  // init_menu()
-}
-
-window.addEventListener('loadSuccess', whenLoadSuccess, false)
-load(new Event('loadSuccess'))
-
-
-let partical_system
-
-const click = (e) => {
-  console.log('cl')
-  partical_system.start(e.x, e.y)
-}
-window.addEventListener('click', click, false)
-
-const add_particle_system = () => {
-  let particle_params = {
-    width: 3, 
-    height: 3
-  }
-
-  partical_system = new ParticleSystem (app.stage, loaded.images.smog, 100, particle_params)
-  loop_manager.add (partical_system.radial, partical_system.particles)
+  GL.useProgram(PROGRAM);
 }
 
 
-const init_quadtree = () => {
-  let width = 200,
-      height = 200
-  let boundary = new Rectangle(200, 200, 200, 200)
-  let qt = new QuadTree(boundary, 4)
-
-  for(let i = 0; i < 1; i++) {
-    let x = Math.floor(Math.random() * width),
-        y = Math.floor(Math.random() * height)
-    let p = new Point(x, y)
-    qt.insert(p)
-  }
-  console.log(qt)
-}
-
-const testtest = () => {
-  add_particle_system()
-
-
+function getShaders() {
+  return {
+      vertex: compileShader(
+          GL.VERTEX_SHADER,
+          document.getElementById(IDs.shaders.vertex).textContent
+      ),
+      fragment: compileShader(
+          GL.FRAGMENT_SHADER,
+          document.getElementById(IDs.shaders.fragment).textContent
+      )
+  };
 }
 
 
+function compileShader(type, source) {
+  const shader = GL.createShader(type);
+
+  GL.shaderSource(shader, source);
+  GL.compileShader(shader);
+  
+  console.log(GL.getShaderInfoLog(shader));
+
+  return shader;
+}
+
+
+function createTexture() {
+  const image = new Image();
+
+  image.crossOrigin = 'anonymous';
+
+  image.onload = () => {
+      const texture = GL.createTexture();
+      
+      GL.activeTexture(GL.TEXTURE0);
+      GL.bindTexture(GL.TEXTURE_2D, texture);
+      GL.pixelStorei(GL.UNPACK_FLIP_Y_WEBGL, true);
+      GL.texImage2D(GL.TEXTURE_2D, 0, GL.RGB, GL.RGB, GL.UNSIGNED_BYTE, image);
+      GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_S, GL.CLAMP_TO_EDGE);
+      GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_WRAP_T, GL.CLAMP_TO_EDGE);
+      GL.texParameteri(GL.TEXTURE_2D, GL.TEXTURE_MIN_FILTER, GL.LINEAR);
+
+      GL.uniform1i(GL.getUniformLocation(PROGRAM, 'u_texture'), 0);
+  };
+
+  image.src = 'https://78.media.tumblr.com/b3c5e28fb0434e1e3f71f51085e06e54/tumblr_pea2d2SDUl1xujoc5o1_540.jpg';
+}
+
+
+
+function updateCanvasSize() {
+  const size = Math.ceil(Math.min(window.innerHeight, window.innerWidth) * .9) - 30;
+
+  CANVAS.height = size;
+  CANVAS.width = size;
+
+  GL.viewport(0, 0, GL.canvas.width, GL.canvas.height);
+  GL.uniform1f(GL.getUniformLocation(PROGRAM, 'u_canvas_size'),
+          Math.max(CANVAS.height, CANVAS.width));
+}
+
+
+function initEventListeners() {
+  window.addEventListener('resize', updateCanvasSize);
+}
+
+
+function draw(timeStamp) {
+  GL.uniform1f(GL.getUniformLocation(PROGRAM, 'u_time'), timeStamp / 1000.0);
+  
+  GL.drawArrays(GL.TRIANGLE_STRIP, 0, 4);
+
+  requestAnimationFrame(draw);
+}
