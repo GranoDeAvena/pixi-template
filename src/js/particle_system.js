@@ -17,7 +17,7 @@ class ParticleSystem {
     // this.container.visible = true
     for (let p of this.particles) {
       let rnd = Math.random() * Math.PI * 2
-      let multiply = 2 + Math.random() * 10
+      let multiply = 1 + Math.random() * 3
       let x_velocity = Math.sin(rnd) * multiply,
           y_velocity = Math.cos(rnd) * multiply
       p.start(x, y, x_velocity, y_velocity)

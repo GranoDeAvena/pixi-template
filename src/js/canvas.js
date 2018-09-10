@@ -1,3 +1,4 @@
+// import Application from 'pixi.js'
 
 let app = new PIXI.Application({ 
   width: 256,         // default: 800

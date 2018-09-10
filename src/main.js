@@ -3,8 +3,11 @@ import * as PIXI from 'pixi.js'
 import {app} from './js/canvas'
 import {load, loaded} from './js/loader'
 import {loop_manager} from './js/loop'
+import {
+  Point,
+  Rectangle,
+  QuadTree} from './js/quadtree'
 import {ParticleSystem} from './js/particle_system'
-import {Particle} from './js/particle'
 import {init_menu, main_menu_loop} from './js/main_menu'
 
 
@@ -44,15 +47,36 @@ const click = (e) => {
 }
 window.addEventListener('click', click, false)
 
-
-const testtest = () => {
+const add_particle_system = () => {
   let particle_params = {
-    width: 2, 
-    height: 2
+    width: 3, 
+    height: 3
   }
 
-  partical_system = new ParticleSystem (app.stage, loaded.images.smog, 10, particle_params)
+  partical_system = new ParticleSystem (app.stage, loaded.images.smog, 100, particle_params)
   loop_manager.add (partical_system.radial, partical_system.particles)
+}
+
+
+const init_quadtree = () => {
+  let width = 200,
+      height = 200
+  let boundary = new Rectangle(200, 200, 200, 200)
+  let qt = new QuadTree(boundary, 4)
+
+  for(let i = 0; i < 1; i++) {
+    let x = Math.floor(Math.random() * width),
+        y = Math.floor(Math.random() * height)
+    let p = new Point(x, y)
+    qt.insert(p)
+  }
+  console.log(qt)
+}
+
+const testtest = () => {
+  add_particle_system()
+
+
 }
 
 

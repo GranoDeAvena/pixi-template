@@ -1,12 +1,10 @@
 // import Sprite from 'pixi.js'
 // import loader from 'pixi.js'
 
-import * as PIXI from 'pixi.js'
+// import * as PIXI from 'pixi.js'
 
-let Container = PIXI.Container,
-    resources = PIXI.loader.resources,
-    Sprite = PIXI.Sprite,
-    stage = new PIXI.Container()
+let resources = PIXI.loader.resources,
+    Sprite = PIXI.Sprite
 
 const assets = [
   {
