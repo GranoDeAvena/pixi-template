@@ -5,7 +5,7 @@ let app = new PIXI.Application({
   height: 256,        // default: 600
   antialias: true,    // default: false
   transparent: false, // default: false
-  forceCanvas: true,
+  // forceCanvas: true,
   resolution: 1       // default: 1
 })
 
