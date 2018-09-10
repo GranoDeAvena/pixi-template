@@ -57,6 +57,20 @@ const init_menu = () => {
 }
 
 
+function createProgram() {
+  const shaders = getShaders();
+  const GL = app.renderer
+
+  PROGRAM = GL.createProgram();
+
+  GL.attachShader(PROGRAM, shaders.vertex);
+  GL.attachShader(PROGRAM, shaders.fragment);
+  GL.linkProgram(PROGRAM);
+
+  GL.useProgram(PROGRAM);
+}
+
+
 const main_menu_loop = () => {
   loaded.images.pan.rotation += 0.01
 }
