@@ -8,20 +8,16 @@ class Particle {
     this.width = this.sprite.width = w
     this.height = this.sprite.height = h
     this.sprite.anchor.set(0.5, 0.5)
+    this.sprite.visible = false
     app.stage.addChild(this.sprite)
 
     this.vx = 0
     this.vy = 0
     // this.target = {x: 0, y: 0}
-    this.sprite.alpha = 0.2
-
-
     this.alife = false
   }
 
-  start(x, y, vx, vy) {
-    this.alife = true
-    this.sprite.visible = true
+  init(x, y, vx, vy) {
     this.sprite.alpha = 1
     this.sprite.width = this.width
     this.sprite.height = this.height
@@ -31,6 +27,11 @@ class Particle {
 
     this.vx = vx
     this.vy = vy
+  }
+
+  start () {
+    this.alife = true
+    this.sprite.visible = true
   }
 
   remove() {

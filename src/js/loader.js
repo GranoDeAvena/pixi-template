@@ -21,6 +21,7 @@ const load = (_load_event) => {
   PIXI.loader
   .add(["src/assets/images/pan.png"])
   .add(["src/assets/images/smog.png"])
+  .add(["src/assets/images/circle.svg"])
   .load(loadSuccess)
 }
 
@@ -31,7 +32,8 @@ const loadSuccess = () => {
   loaded = {
     images: {
       pan: resources["src/assets/images/pan.png"].texture,
-      smog: resources["src/assets/images/smog.png"].texture
+      smog: resources["src/assets/images/smog.png"].texture,
+      circle: resources["src/assets/images/circle.svg"].texture
     }
   }
 

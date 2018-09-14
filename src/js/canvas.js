@@ -9,7 +9,7 @@ let app = new PIXI.Application({
   resolution: 1       // default: 1
 })
 
-app.renderer.backgroundColor = 0x061639
+app.renderer.backgroundColor = 0xffffff
 app.renderer.view.style.position = "absolute"
 app.renderer.view.style.display = "block"
 app.renderer.autoResize = true
@@ -22,7 +22,6 @@ const risezeWindow = (event) => {
 }
 
 window.addEventListener("resize", risezeWindow)
-
 
 
 
