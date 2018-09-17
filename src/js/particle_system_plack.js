@@ -7,7 +7,7 @@ const
   delta_height = 0.5,
   delta_alpha = -0.02,
   acceleration = 0.9,
-  number = 20,
+  number = 10,
   max_number = 400
 
 class Plack extends ParticleSystem {
@@ -31,7 +31,11 @@ class Plack extends ParticleSystem {
     }
   }
 
-  radial (delta, particle_system) {
+  is_dead (particle) {
+    return particle.sprite.alpha <= 0
+  }
+
+  loop (delta, particle_system) { // not use "this"! use particle_system 
 
     let particles = particle_system.particles
     for (let i = particles.length-1; i >= 0; i--) {
@@ -48,7 +52,7 @@ class Plack extends ParticleSystem {
 
         p.sprite.alpha  += delta_alpha
 
-        if (p.sprite.alpha <= 0) {
+        if (particle_system.is_dead(p)) {
           particles.splice(i, 1)
           particle_system.remove(p)
         }

@@ -56,41 +56,14 @@ window.addEventListener('click', click, false)
 window.addEventListener('touchstart', touch, false)
 
 const add_particle_system = () => {
-  let particle_params = {
-    width: 15, 
-    height: 15
-  }
+  partical_system = new Plack (app.stage, loaded.images.circle)
 
-  // partical_system = new ParticleSystem (app.stage, loaded.images.circle, 40, 1500, particle_params)
-  partical_system = new Plack (app.stage, loaded.images.circle, particle_params)
-
-  loop_manager.add (partical_system.radial, partical_system)
+  loop_manager.add (partical_system.loop, partical_system)
 }
 
 
-// const init_quadtree = () => {
-//   let width = 200,
-//       height = 200
-//   let boundary = new Rectangle(200, 200, 200, 200)
-//   let qt = new QuadTree(boundary, 4)
-
-//   for(let i = 0; i < 1; i++) {
-//     let x = Math.floor(Math.random() * width),
-//         y = Math.floor(Math.random() * height)
-//     let p = new Point(x, y)
-//     qt.insert(p)
-//   }
-//   console.log(qt)
-// }
-
 const testtest = () => {
   add_particle_system()
-
-  // let c = new PIXI.Sprite(loaded.images.circle)
-  // app.stage.addChild(c)
-  // c.position.set(100, 100)
-  // c.width = c.height = 20
-
 }
 
 

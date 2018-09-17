@@ -18,6 +18,12 @@ class ParticleSystem {
     this.assets = new Assets(create_asset, max_number)
   }
 
+  start (x, y) { }
+
+  loop (delta, particle_system) { }
+
+  is_dead (particle) { }
+
   start_generator(func, time) {
     this.stop_generator()
     this.generator_number = 0
