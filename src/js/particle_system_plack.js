@@ -1,59 +1,56 @@
 import {ParticleSystem} from './particle_system'
 
+const 
+  start_width = 2, 
+  start_height = 2,
+  delta_widtth = 0.5,
+  delta_height = 0.5,
+  delta_alpha = -0.02,
+  acceleration = 0.9,
+  number = 20,
+  max_number = 400
+
 class Plack extends ParticleSystem {
 
-  constructor(container, texture, particle_params) {
-    const number = 4
-    const max_number = 400
-    super(container, texture, number, max_number, particle_params)
-    this.number = number
-    this.max_number = max_number
-  }
-
-  init(x, y) {
-    for (let i = 0; i < this.number; i++) {
-      let p = this.assets.pull()
-      p.init(x, y, x_velocity, y_velocity)
-      
-      let rnd = Math.random() * Math.PI * 2
-      let multiply = 1 + Math.random() * 2
-      let x_velocity = Math.sin(rnd) * multiply,
-      y_velocity = Math.cos(rnd) * multiply
-      
-      p.start()
-      this.particles.push(p)
-
-      p.init(x, y, x_velocity, y_velocity)
-    }
+  constructor(container, texture) {
+    super(container, texture, number, max_number, {width: start_width, height: start_height})
   }
 
   start(x, y) {
-    // this.init(x, y)
-    this.start_generator(() => {
-      this.init(x, y)
-    }, 100)
+    for (let i = 0; i < this.number; i++) {
+      let p = this.assets.pull()
+      
+      const direction = Math.random() * Math.PI * 2
+      const start_speed = 1 + Math.random() * 2
+      const x_velocity = Math.sin(direction) * start_speed,
+            y_velocity = Math.cos(direction) * start_speed
+      
+      p.start()
+      p.init(x, y, x_velocity, y_velocity)
+      this.particles.push(p)
+    }
   }
 
   radial (delta, particle_system) {
 
-    let ps = particle_system.particles
-    for (let i = ps.length-1; i >= 0; i--) {
-      let p = ps[i]
+    let particles = particle_system.particles
+    for (let i = particles.length-1; i >= 0; i--) {
+      let p = particles[i]
       if (p.alife) {
         p.sprite.x += p.vx
         p.sprite.y += p.vy
 
-        p.vx *= 0.95
-        p.vy *= 0.95
+        p.vx *= acceleration
+        p.vy *= acceleration
 
-        p.sprite.width  += 0.4
-        p.sprite.height += 0.4
-        p.sprite.alpha -= 0.04
+        p.sprite.width  += delta_widtth
+        p.sprite.height += delta_height
+
+        p.sprite.alpha  += delta_alpha
+
         if (p.sprite.alpha <= 0) {
-
-          particle_system.assets.put(p)
-          ps.splice(i, 1)
-          p.remove()
+          particles.splice(i, 1)
+          particle_system.remove(p)
         }
       }
     }
