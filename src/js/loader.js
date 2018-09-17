@@ -22,6 +22,7 @@ const load = (_load_event) => {
   .add(["src/assets/images/pan.png"])
   .add(["src/assets/images/smog.png"])
   .add(["src/assets/images/circle.svg"])
+  .add(["src/assets/images/wood.jpg"])
   .load(loadSuccess)
 }
 
@@ -33,7 +34,8 @@ const loadSuccess = () => {
     images: {
       pan: resources["src/assets/images/pan.png"].texture,
       smog: resources["src/assets/images/smog.png"].texture,
-      circle: resources["src/assets/images/circle.svg"].texture
+      circle: resources["src/assets/images/circle.svg"].texture,
+      wood: resources["src/assets/images/wood.jpg"].texture
     }
   }
 
