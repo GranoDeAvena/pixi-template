@@ -13,7 +13,7 @@ const GL = canvas.getContext('webgl');
 let PROGRAM
 
 
-main();
+main()
 
 
 function main() {
