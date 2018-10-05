@@ -18,7 +18,7 @@ main()
 function main() {
   clearCanvas();
   createPlane();
-  createProgram();
+  createProgram()
   createTexture()
   updateCanvasSize()
   initEventListeners()
