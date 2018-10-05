@@ -16,7 +16,7 @@ let PROGRAM
 main()
 
 function main() {
-  clearCanvas();
+  clearCanvas()
   createPlane()
   createProgram()
   createTexture()
