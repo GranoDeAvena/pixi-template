@@ -4,7 +4,7 @@ const IDs = {
       vertex: 'vertex-shader',
       fragment: 'fragment-shader'
   }
-};
+}
 
 
 const CANVAS = document.getElementById(IDs.canvas);
