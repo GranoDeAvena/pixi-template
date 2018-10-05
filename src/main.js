@@ -20,7 +20,7 @@ function main() {
   createPlane();
   createProgram();
   createTexture();
-  updateCanvasSize();
+  updateCanvasSize()
   initEventListeners()
   draw()
 }
