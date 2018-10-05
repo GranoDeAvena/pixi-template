@@ -21,3 +21,4 @@ For detailed explanation on how things work, consult the [docs for vue-loader](h
 
 need more empty lines
 please stop doin this
+=)
