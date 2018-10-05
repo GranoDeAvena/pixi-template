@@ -21,7 +21,7 @@ function main() {
   createProgram();
   createTexture();
   updateCanvasSize();
-  initEventListeners();
+  initEventListeners()
   draw()
 }
 
