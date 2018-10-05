@@ -10,7 +10,7 @@ const IDs = {
 const CANVAS = document.getElementById(IDs.canvas);
 const GL = canvas.getContext('webgl');
 
-let PROGRAM;
+let PROGRAM
 
 
 main();
