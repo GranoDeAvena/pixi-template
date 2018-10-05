@@ -15,7 +15,6 @@ let PROGRAM
 
 main()
 
-
 function main() {
   clearCanvas();
   createPlane();
