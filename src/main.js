@@ -22,7 +22,7 @@ function main() {
   createTexture();
   updateCanvasSize();
   initEventListeners();
-  draw();
+  draw()
 }
 
 
